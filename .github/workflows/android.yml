@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>آلة الحاسبة</title>
+  <style>
+    .calculator {
+      width: 300px;
+      margin: 50px auto;
+      background-color: #0c2461;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .screen {
+      background-color: #4b6584;
+      padding: 10px;
+      margin-bottom: 10px;
+      text-align: right;
+      font-size: 24px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      color: #fff;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-gap: 10px;
+    }
+
+    button {
+      padding: 10px;
+      font-size: 18px;
+      background-color: #4b6584;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      color: #fff;
+      position: relative; /* إضافة موضع نسبي للعناصر الفرعية */
+    }
+
+    button:hover {
+      background-color: #2e4a6f;
+    }
+
+    button.num-7 { color: #ff6b6b; }
+    button.num-8 { color: #ffa500; }
+    button.num-9 { color: #7bed9f; }
+    button.num-4 { color: #a29bfe; }
+    button.num-5 { color: #e84393; }
+    button.num-6 { color: #81ecec; }
+    button.num-1 { color: #74b9ff; }
+    button.num-2 { color: #fab1a0; }
+    button.num-3 { color: #55efc4; }
+    button.num-0 { color: #fd79a8; }
+
+    .small-text {
+      font-size: 10px; /* حجم الخط الصغير */
+      position: absolute; /* وضع العنصر الفرعي في موضع مطلق */
+      bottom: 0; /* وضع النص في الأسفل */
+      left: 50%; /* توسيط النص أفقيًا */
+      transform: translateX(-50%); /* تحريك النص إلى اليسار بنصف عرضه */
+      margin-bottom: 2px; /* إضافة مسافة بين النص والزر */
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div class="screen" id="screen">0</div>
+    <div class="buttons">
+      <button class="num-7" onclick="handleInput('7')">7<span class="small-text">Ziad</span></button>
+      <button class="num-8" onclick="handleInput('8')">8<span class="small-text">fawzy</span></button>
+      <button class="num-9" onclick="handleInput('9')">9<span class="small-text">Ziad</span></button>
+      <button onclick="handleInput('/')">/</button>
+      <button class="num-4" onclick="handleInput('4')">4<span class="small-text">fawzy</span></button>
+      <button class="num-5" onclick="handleInput('5')">5<span class="small-text">Ziad</span></button>
+      <button class="num-6" onclick="handleInput('6')">6<span class="small-text">fawzy</span></button>
+      <button onclick="handleInput('*')">*</button>
+      <button class="num-1" onclick="handleInput('1')">1<span class="small-text">Ziad</span></button>
+      <button class="num-2" onclick="handleInput('2')">2<span class="small-text">fawzy</span></button>
+      <button class="num-3" onclick="handleInput('3')">3<span class="small-text">Ziad</span></button>
+      <button onclick="handleInput('-')">-</button>
+      <button class="num-0" onclick="handleInput('0')">0<span class="small-text">fawzy</span></button>
+      <button onclick="handleInput('.')">.</button>
+      <button onclick="calculate()">=</button>
+      <button onclick="handleInput('+')">+</button>
+    </div>
+  </div>
+
+  <script>
+    let currentValue = '0';
+    let operator = null;
+    let previousValue = null;
+
+    function handleInput(input) {
+      if (input === '.' && currentValue.includes('.')) {
+        return;
+      }
+
+      if (input === '0' && currentValue === '0') {
+        return;
+      }
+
+      if (currentValue === '0' && input !== '.') {
+        currentValue = '';
+      }
+
+      currentValue += input;
+      updateScreen();
+    }
+
+    function updateScreen() {
+      document.getElementById('screen').textContent = currentValue;
+    }
+
+    function calculate() {
+      if (operator === null) {
+        return;
+      }
+
+      const current = parseFloat(currentValue);
+      const previous = parseFloat(previousValue);
+
+      let result;
+      switch (operator) {
+        case '+':
+          result = previous + current;
+          break;
+        case '-':
+          result = previous - current;
+          break;
+        case '*':
+          result = previous * current;
+          break;
+        case '/':
+          result = previous / current;
+          break;
+      }
+
+      currentValue = result.toString();
+      operator = null;
+      previousValue = null;
+      updateScreen();
+    }
+
+    function handleOperator(op) {
+      if (operator !== null) {
+        calculate();
+      }
+
+      operator = op;
+      previousValue = currentValue;
+      currentValue = '0';
+    }
+  </script>
+</body>
+</html>
